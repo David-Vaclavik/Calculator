@@ -1,0 +1,127 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: sans-serif;
+    background-color: oklch(20% 0.00009 271.152);
+    color: oklch(90% 0.00002 271.152);
+}
+
+/* main */
+main {
+    display: flex;
+    /* justify-content: center; */
+    align-items: flex-end;
+    padding: 100px;
+    /* background-color: rgb(69, 42, 165); */
+}
+
+.calculator {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px;
+    gap: 20px;
+    border: 1px solid oklch(35% 0.00009 271.152);
+    border-radius: 18px;
+    background-color: oklch(40% 0.00009 271.152);
+    box-shadow: 0 10px 16px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.calculator-display {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: end;
+    padding: 0px 20px;
+    /* border: 2px solid oklch(70% 0.00009 271.152); */
+    border: 2px solid oklch(70% 0.06967 180);
+    border-radius: 8px;
+    font-size: 60px;
+    /* width: 100px; */
+    height: 120px;
+    line-height: 1.3; 
+    /* background-color: rgb(91, 145, 145); */
+    background-color: oklch(60% 0.06967 180);
+}
+
+.display-history {
+    font-size: 24px;
+    padding-top: 5px;
+    /* background-color: red; */
+}
+
+.calculator-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 430px; /* WIP */
+    /* background-color: rgb(243, 82, 82); */
+    /* background-color: rgb(255, 255, 255); */
+}
+
+button {
+    font-size: 32px;
+    font-weight: 600;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+    width: 100px;
+    height: 100px;
+    border: 1px solid oklch(70% 0.00009 271.152);
+    border-radius: 5px;
+    color: oklch(20% 0.00009 271.152);
+    background-color: oklch(80% 0.00009 271.152);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.1s ease-out, box-shadow 0.1s ease-out;
+}
+
+button:hover {
+    background-color: oklch(70% 0.00009 271.152);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+button:active {
+    background-color: oklch(60% 0.00009 271.152);
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
+    transform: translateY(1px);
+}
+
+.btn-operator, .btn-equals {
+    background-color: oklch(60% 0.00009 271.152);
+    border: 1px solid oklch(50% 0.00009 271.152);
+}
+
+.btn-equals {
+    width: 210px;
+}
+
+.btn-clear {
+    background-color: oklch(60% 0.14495 23.401);
+    border: 1px solid oklch(50% 0.14495 23.401);
+}
+
+.btn-clear:hover {
+    background-color: oklch(70% 0.14495 23.401);
+}
+
+.btn-clear:active {
+    background-color: oklch(80% 0.14495 23.401);
+}
+
+.btn-delete {
+    background-color: oklch(60% 0.09784 246.303);
+    border: 1px solid oklch(50% 0.09784 246.303);
+}
+
+.btn-delete:hover {
+    background-color: oklch(70% 0.09784 246.303);
+}
+
+.btn-delete:active {
+    background-color: oklch(80% 0.09784 246.303);
+}
