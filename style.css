@@ -8,18 +8,10 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 50px;
     font-family: sans-serif;
     background-color: oklch(20% 0.00009 271.152);
     color: oklch(90% 0.00002 271.152);
-}
-
-/* main */
-main {
-    display: flex;
-    /* justify-content: center; */
-    align-items: flex-end;
-    padding: 100px;
-    /* background-color: rgb(69, 42, 165); */
 }
 
 .calculator {
@@ -40,7 +32,6 @@ main {
     justify-content: space-between;
     align-items: end;
     padding: 0px 20px;
-    /* border: 2px solid oklch(70% 0.00009 271.152); */
     border: 2px solid oklch(70% 0.06967 180);
     border-radius: 8px;
     font-size: 60px;
@@ -48,7 +39,6 @@ main {
     height: 120px;
     overflow: hidden;
     line-height: 1.3; 
-    /* background-color: rgb(91, 145, 145); */
     background-color: oklch(60% 0.06967 180);
     color: oklch(95% 0.03 180);
 }
@@ -56,7 +46,6 @@ main {
 .display-history {
     font-size: 24px;
     padding-top: 5px;
-    /* background-color: red; */
 }
 
 .calculator-buttons {
@@ -64,8 +53,6 @@ main {
     flex-wrap: wrap;
     gap: 10px;
     width: 430px; /* WIP */
-    /* background-color: rgb(243, 82, 82); */
-    /* background-color: rgb(255, 255, 255); */
 }
 
 button {
