@@ -14,37 +14,73 @@ let currentOperator = '';
 let lastAction = 'number'; 
 
 const displayOutput = document.querySelector(".display-output");
+const displayHistory = document.querySelector(".display-history");
 
-let decimals = 5;
+const getCurrentDisplay = () => displayOutput.textContent;
+const setDisplay = (value) => displayOutput.textContent = value;
+const appendToDisplay = (value) => displayOutput.textContent += value;
+
+const decimals = 5;
 function roundTo(num) {
   return Math.round(num * 10 ** decimals) / 10 ** decimals;
 }
 
 function operate(operator, a, b) {
-    if (operator === '/' && b === '0') return displayOutput.textContent = 'Ar U ReTard?';
+    if (operator === '/' && b === '0') return setDisplay('Ar U ReTard?');
     switch(operator) {
-        case '+': return displayOutput.textContent = roundTo(add(a, b));
-        case '-': return displayOutput.textContent = roundTo(subtract(a, b));
-        case '*': return displayOutput.textContent = roundTo(multiply(a, b));
-        case '/': return displayOutput.textContent = roundTo(divide(a, b));
-        case '%': return displayOutput.textContent = roundTo(modulo(a, b));
+        case '+': return setDisplay(roundTo(add(a, b)));
+        case '-': return setDisplay(roundTo(subtract(a, b)));
+        case '*': return setDisplay(roundTo(multiply(a, b)));
+        case '/': return setDisplay(roundTo(divide(a, b)));
+        case '%': return setDisplay(roundTo(modulo(a, b)));
         default: return 0;
     }
 }
 
+function populateHistory(operator, num) {
+    if (num.includes('.') && num.indexOf('.') === num.length - 1) {
+        num = num.slice(0, -1);
+    }
+    displayHistory.textContent = `${num} ${operator}`;
+}
+
 function populateDisplay(num) {
+    if (num === '0' && getCurrentDisplay() === '') {
+        return appendToDisplay(num);    // Early return
+    } else if (num === '0' && getCurrentDisplay() === '0') {
+        return;                         // Early return
+    }
+
     if (result) clear();
-    if (operatorCount > 1) {
-        numA = displayOutput.textContent;
+    if (operatorCount > 1 && lastAction === 'operator') {
+        numA = getCurrentDisplay();
         clear();
     }
+
+    const maxDigits = 11;
+    
+    // Count only digits (exclude decimal point and negative sign)
+    const digitCount = getCurrentDisplay().replace(/[\.\-]/g, '').length;
+    
+    // Allow decimal point even if at digit limit
+    if (digitCount >= maxDigits && num !== '.') return;         // Don't add more digits
+    else if (digitCount === maxDigits && num === '.') return;   // Don't add '.' if at MAX digits
+
     result = false;
-    return displayOutput.textContent += num;
+    if (num === '.' && lastAction === 'operator') {
+        clear();
+        return appendToDisplay(`0${num}`);
+    }
+    if (num === '.'&& getCurrentDisplay() === '') {
+        return appendToDisplay(`0${num}`);
+    }
+
+    return appendToDisplay(num);
 }
 
 // clears display
 function clear() {
-    return displayOutput.textContent = "";
+    return setDisplay('');
 }
 
 // Resets to "Default" values
@@ -56,20 +92,21 @@ function clearAllValues() {
     currentOperator = '';
     lastAction = 'number';
     clear();
-    // console.clear();
+    displayHistory.textContent = '';
 }
 
 // deletes latest character
 function deleteChar() {
-    displayOutput.textContent = displayOutput.textContent.slice(0, -1);
+    setDisplay(getCurrentDisplay().slice(0, -1));
 }
 
+// CLEAR , DELETE , DECIMAL --------------------------------------------------------
 document.querySelector(".btn-clear").addEventListener('click', () => clearAllValues());
 document.querySelector(".btn-delete").addEventListener('click', () => deleteChar());
-
 document.querySelector(".btn-decimal").addEventListener('click', () => {
-    if (displayOutput.textContent.includes('.')) return; // Early return
+    if (getCurrentDisplay().includes('.')) return; // Early return
     populateDisplay('.');
+    lastAction = 'number';
 });
 
 // Get all NUMBER buttons and add event listeners
@@ -89,44 +126,65 @@ document.querySelectorAll('.btn-operator').forEach(button => {
     });
 });
 
-// Operator logic
+// Operator logic - this function is retarded, if there is a bug it's for sure here
 function handleOperator(operator) {
-    if (displayOutput.textContent === '' || lastAction === 'operator') {
+    if (getCurrentDisplay() === '' || lastAction === 'operator') {
         currentOperator = operator;
-        console.log(`Changed operator to: ${operator}`);
+        if (operatorCount > 1) return populateHistory(currentOperator, getCurrentDisplay());
+        populateHistory(currentOperator, numA);
         return;
     }
 
     operatorCount++;
     lastAction = 'operator';
-    console.log(operatorCount + ' Operator Count');
 
     if (operatorCount > 1) {
-        numB = displayOutput.textContent;
-        console.log(currentOperator);
+        numB = getCurrentDisplay();
         operate(currentOperator, numA, numB);
         currentOperator = operator;
+        populateHistory(currentOperator, getCurrentDisplay());
     } else if (operatorCount === 1) {
-        numA = displayOutput.textContent;
-        console.log(numA + ' numA log');
-        console.log(operator); 
+        numA = getCurrentDisplay();
         currentOperator = operator;
+        populateHistory(currentOperator, numA);
         clear();
     }
 }
 
+// ===========EQUALS============
 document.querySelector(".btn-equals").addEventListener('click', () => {
+    if (lastAction === 'operator' && getCurrentDisplay() === '') return;
     handleEquals();
 });
 
-// Equals logic
+// Equals logic - this is also retarded
 function handleEquals() {
-    numB = displayOutput.textContent;
-    console.log(numB + " numB log");
-    console.log(operate(currentOperator, numA, numB));
+    if (lastAction === 'equals') return;    // Early exit
+    if (currentOperator === '') return;     // Early exit
+
+    if (lastAction === 'operator') {
+        numA = getCurrentDisplay();
+    } 
+
+    numB = getCurrentDisplay();
+    operate(currentOperator, numA, numB);
+
+    numA = numA.toString();
+    numB = numB.toString();
+    
+    // Slice off the decimal if there is no number after
+    if (numA.includes('.') && numA.indexOf('.') === numA.length - 1) {
+        numA = numA.slice(0, -1);
+    }
+    if (numB.includes('.') && numB.indexOf('.') === numB.length - 1) {
+        numB = numB.slice(0, -1);
+    }
+
+    displayHistory.textContent = `${numA} ${currentOperator} ${numB} =`;
     numA = 0;
     operatorCount = 0;
     currentOperator = '';
+    lastAction = 'equals'
     result = true;
 }
 
@@ -167,13 +225,13 @@ document.addEventListener('keydown', (event) => {
             
         case 'Backspace':
         case 'Delete':
-            event.preventDefault(); // Stop the default behavior
+            event.preventDefault();
             deleteChar();
             break;
             
         case '.':
             event.preventDefault();
-            if (displayOutput.textContent.includes('.')) return; // Early return
+            if (getCurrentDisplay().includes('.')) return; // Early return
             populateDisplay('.');
             break;
     }
@@ -182,11 +240,9 @@ document.addEventListener('keydown', (event) => {
 
 /*
 TO DO:
-    - Add History above
-    - Add visual feedback for key presses
-    - Clean up console.log statements
+    - Add proper handling of negative numbers
+    - Add visual feedback for key presses on keyboard
 */
-
 
 
 

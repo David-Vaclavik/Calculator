@@ -8,6 +8,15 @@ This is a simple calculator program that can perform basic arithmetic operations
 - Subtraction
 - Multiplication
 - Division
+- Modulus
+- Supports both integer and floating-point numbers
+- Handles division by zero gracefully
+- Keeps a short history of calculations
+- Keyboard support
+
+## Upcoming Features
+
+- Support for negative numbers - WIP
 
 ## Usage
 

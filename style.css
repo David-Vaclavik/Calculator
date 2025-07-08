@@ -50,6 +50,7 @@ main {
     line-height: 1.3; 
     /* background-color: rgb(91, 145, 145); */
     background-color: oklch(60% 0.06967 180);
+    color: oklch(95% 0.03 180);
 }
 
 .display-history {
@@ -101,6 +102,7 @@ button:active {
     width: 210px;
 }
 
+/* C button */
 .btn-clear {
     background-color: oklch(60% 0.14495 23.401);
     border: 1px solid oklch(50% 0.14495 23.401);
@@ -114,6 +116,7 @@ button:active {
     background-color: oklch(80% 0.14495 23.401);
 }
 
+/* Delete button */
 .btn-delete {
     background-color: oklch(60% 0.09784 246.303);
     border: 1px solid oklch(50% 0.09784 246.303);
